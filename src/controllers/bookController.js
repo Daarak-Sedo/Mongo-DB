@@ -10,15 +10,16 @@ const createBook= async function (req, res) {
 
 const getBooksData= async function (req, res) {
 
-    // let allBooks= await BookModel.find( ).count() // COUNT
+    // let allBooks= await BookModel.find( ).count()      //for  COUNT, we use this mathod
 
-    // let allBooks= await BookModel.find( { authorName : "Chetan Bhagat" , isPublished: true  } ) // AND
+    // let allBooks= await BookModel.find( { authorName : "Chetan Bhagat" , isPublished: true  } )      //for AND
     
     // let allBooks= await BookModel.find( { 
     //     $or: [ {authorName : "Chetan Bhagat" } , { isPublished: true } , {  "year": 1991 }]
-    // } ).select( { bookName: 1, authorName: 1, _id: 0})n // SELECT keys that we want
+    // } ).select( { bookName: 1, authorName: 1, _id: 0})n      //  to SELECT keys that we want
 
-    // let allBooks= await BookModel.find().sort( { sales: -1 }) // SORT
+    // let allBooks= await BookModel.find().sort( { sales: 1 })  // to SORT in incresing number
+   // let allBooks= await BookModel.find().sort( { sales: -1 })  // to SORT in decresing number
 
     // PAGINATION 
     // let page= req.query.page
@@ -57,14 +58,13 @@ const getBooksData= async function (req, res) {
 
 
 
-    // REGEX
+    // REGEX--- we use it to Find caractor/lette  in any word(in middle,begnignig,end) 
     // let allBooks= await BookModel.find( { bookName:  /^Int/  }) 
     // let allBooks= await BookModel.find( { bookName:  /^INT/i  }) 
     // let allBooks= await BookModel.find( { bookName:  /5$/  }) 
     // let allBooks= await BookModel.find( { bookName:  /.*Programming.*/i  }) 
     
     // ASYNC AWAIT
-    
     let a= 2+4
     a= a + 10
     console.log(a)

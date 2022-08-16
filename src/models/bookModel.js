@@ -16,16 +16,18 @@ const bookSchema = new mongoose.Schema( {
 
 module.exports = mongoose.model('Book', bookSchema) //users
 
-//Validation:
-//require:true
-//unique
-// default
+// type od Validation ----- :
+            //require:true  (means should not be empaty)
+            //unique
+            // default - defult vale
 
-//String
-//Number
-//Date
-//Boolean
-// Arrays
-// Object
-// ObjectId
-// Buffer - not cover
+
+// type of data type  ---- :      
+            //String 
+            //Number
+            //Date- date.now
+            //Boolean
+            // Arrays
+            // Object
+            // ObjectId
+           // Buffer - not cover
