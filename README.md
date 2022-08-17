@@ -16,6 +16,8 @@
               gesex
               limit()
               select()
+              count()
+              skip()
               
               
               
