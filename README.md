@@ -28,32 +28,40 @@ summary key can have all these types of book summaries now:
 Date type and Date.now, new Date(), momentJs,
 Date maniupaltions( brief intro) + shared this resource on moment module : https://www.sitepoint.com/managing-dates-times-using-moment-js/ 
 
-find vs findOne
+find vs findOne -----
 find gives all the documents that match the condition | findOne gives only the first document that matches
 find gives an array | findOne gives an object
 If no match is found -  find gives [] empty array which is a truthy value  || findOne gives null which is a falsey value …… user=findOne()  and then if(user)  :- will fail with find as it will be truthy even if no user is found
 
 
-updateMany and findOneAndUpdate
+updateMany and findOneAndUpdate -----
 //   let books = await BookModel.updateMany (  {isPublished: false } ,  {author : "PK"}   );  // first json is the query condition  || second condition is the required update or change
 //   let books = await BookModel.findOneAndUpdate(  {isPublished: true } ,  {author : "Sabiha"}   );  // it updates only the first matching doc
 //   let books = await BookModel.findOneAndUpdate(  {isPublished: true } ,  {author : "Sabiha 3"} , { new: true}  );  // third param : new: true - will give you the updated document
   
-upsert: true - it finds and updates the document but if the doc is not found(i.e it does not exist) then it creates a new document
+upsert: ---
+true - it finds and updates the document but if the doc is not found(i.e it does not exist) then it creates a new document
 // let books = await BookModel.findOneAndUpdate(  {bookName : "Hi Pritesh2" } ,  {bookName : "Hi My New Book" , ISBN : "basd87g8h7a88b"} , { upsert: true}  );  
 
-isDeleted flag
+isDeleted flag ----
 // how to delete a document: never ever use remove.. always maintain a flag(a key in schema) "isDeleted: false" and whenever a doc is being deleted change this to "isDeleted: true”   (mark dirty)
 
-ASSIGNMENT  1:- ( dont use ref and populate) 
+
+
+ASSIGNMENT  1:---  ( dont use ref and populate) 
 You have to replicate the below data in your database. With this in mind, create a node application and APIs to do the following:
 
-1. Write down the schemas for book and authors (keeping the data given below in mind). Also create the documents (corresponding to the data given below) in your database.
-2. CRUD operations. Write API's to do the following:
+1.   Write down the schemas for book and authors (keeping the data given below in mind). Also create the documents (corresponding to the data given below) in your database.
+
+2.   CRUD operations. Write API's to do the following:
+
 Write create APIs for both books and authors ---> If author_id is not available then do not accept the entry(in neither the author collection nor the books collection)
-List out the books written by "Chetan Bhagat" ( this will need 2 DB queries one after another- first query will find the author_id for "Chetan Bhagat”. Then next query will get the list of books with that author_id )
-find the author of “Two states” and update the book price to 100;  Send back the author_name and updated price in response.  ( This will also need 2  queries- 1st will be a findOneAndUpdate. The second will be a find query aith author_id from previous query)
-Find the books which costs between 50-100(50,100 inclusive) and respond back with the author names of respective books.. 
+ 
+3.   List out the books written by "Chetan Bhagat" ( this will need 2 DB queries one after another- first query will find the author_id for "Chetan Bhagat”. Then next query will get the list of books with that author_id )
+
+4.   find the author of “Two states” and update the book price to 100;  Send back the author_name and updated price in response.  ( This will also need 2  queries- 1st will be a findOneAndUpdate. The second will be a find query aith author_id from previous query)
+
+5.   Find the books which costs between 50-100(50,100 inclusive) and respond back with the author names of respective books.. 
 bookModel.find( { price : { $gte: 50}  ,  price: {$lte: 100} } ) // WRONG
 bookModel.find( { price : { $gte: 50, $lte: 100} } ).select({ author_id :1})..run a map(or forEach) loop and get all the authorName corresponding to the authorId’s ( by querying authorModel)
 

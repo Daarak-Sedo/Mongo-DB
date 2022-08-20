@@ -10,5 +10,4 @@ const bookSchema = new mongoose.Schema({
     ratings: Number,
 }, { timestamps: true });
 
-
 module.exports = mongoose.model("Books Detail", bookSchema);
