@@ -22,6 +22,9 @@ const createBook = async function (req, res) {
     if (!author_id || !publisher_id) {
         return res.send("ID is required")
     }
+         // we can write it by 2 type - 
+             // let isValid = mongoose.Types.ObjectId.isValid(author1)
+   
     if (!isValidObjectId(author_id)) {
         return res.send({ status: false, message: "Author is not present" });
     }
@@ -33,38 +36,36 @@ const createBook = async function (req, res) {
     return res.send({ data: bookCreated })
 }
 
-
+   
 // Problem 4 -  Write a GET api that fetches all the books along with their author details (you have to populate for this) as well the publisher details (you have to populate for this) 
 
-const getBooksWithAuthorDetails = async function (req, res) {
-    let specificBook = await bookModel.find().populate(['author_id', 'publisher_id'])
-    res.send({ data: specificBook })
+const getBooksData = async function (req, res) {
+    let books =  await bookModel.find().populate(['author_id', 'publisher_id'])    
+   res.send({ data: books })
 }
+ // Populate- is used to fetch fata from another obj , after fetching it Set data in same obj 
 
 
 //Problem 5 -  Create at least 4 publishers (Penguin, Bloomsbury, Saraswati House, HarperCollins). Create at least 6 authors with ratings 2, 3, 3.5, 4, 4.5 and 5. Create around 10 books with these publishers and authors.
 
-// Create a new PUT api /books and perform the following two operations --
-//  a) Add a new boolean attribute in the book schema called isHardCover with a default false value. For the books published by 'Penguin' and 'HarperCollins', update this key to true.
+   // Create a new PUT api /books and perform the following two operations --
+//a-- Add a new boolean attribute in the book schema called isHardCover with a default false value. For the books published by 'Penguin' and 'HarperCollins', update this key to true.
 
-const updateHardCover = async function (req, res) {
-    let pub_id = await publisherModel.find({$or: [{name : "Penguin"}, {name : "HarperCollins"}]}).select({_id:1});
-    console.log(pub_id)
-    let updatebooks = await bookModel.updateMany(
-        {$or: [{publisher_id: pub_id[0]._id }, {publisher_id: pub_id[1]._id}]},
-        { $set: { isHardCover: false } }
-    )
 
-  //  b) For the books written by authors having a rating greater than 3.5, update the books price by 10 (For eg if old price for such a book is 50, new will be 60) 
+const getBooksWithAuthorDetails = async function (req, res) {
+   
+    let data =   await publisherModel.find({name : ["Penguin","HarperCollins"]}).select({_id : 1})
+    //   We Can Write also --   await publisherModel.find({$or: [{name : "Penguin"}, {name : "HarperCollins"}]}).select({_id:1});
+    let bookid = await bookModel.updateMany({ publisher : data },{ $set : {isHardCover : true , new : true }},{upsert : true})
+    // await bookModel.updateMany({$or: [{publisher_id: pub_id[0]._id }, {publisher_id: pub_id[1]._id}]}, { $set: { isHardCover: false } }
 
-    let auth_id = await authorModel.find({rating:{$gt: 3.5}}).select({_id:1});
-    console.log(auth_id);
 
-    let updatePrice = await bookModel.updateMany(
-        {$or: [{author_id: auth_id[0]._id }, {author_id: auth_id[1]._id}]},
-        {$inc: {price: 10}}
-    )
-    return res.send({updatebooks,updatePrice})
-}
 
-module.exports = { createBook, getBooksWithAuthorDetails, updateHardCover };
+// b-- For the books written by authors having a rating greater than 3.5, update the books price by 10 (For eg if old price for such a book is 50, new will be 60) 
+    let authorIds = await authorModel.find( { ratings : { $gt : 3.5 }}).select({_id : 1})
+    let rating1 = await bookModel.updateMany({author : authorIds }, { $inc : {price :10 }},{upsert : true})
+ 
+    res.send({ data: bookid , rating1})
+  }
+
+  module.exports = { createBook, getBooksWithAuthorDetails, getBooksData };
